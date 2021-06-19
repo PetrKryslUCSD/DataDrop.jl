@@ -116,7 +116,7 @@ function test()
     name = joinpath(p, "matrix d")
     ext = ""
     s = with_extension(getcleanname(name), ext)
-    d = sprand(Float64, 4, 3, 0.75)
+    d = sprand(Float64, 5, 3, 0.75)
     store_matrix(s, d)
     d1 = retrieve_matrix(s)
     @test d == d1
@@ -125,3 +125,6 @@ end
 end
 using .mt0006
 mt0006.test()
+
+
+
