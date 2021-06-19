@@ -7,11 +7,11 @@ using HDF5
 const _sep = "-"
 
 """
-    getcleanname(name)
+    clean_file_name(name)
 
 Construct a clean file name.
 """
-function getcleanname(name)
+function clean_file_name(name)
     cleanname = replace(replace(replace(name,'.'=>'_'),':'=>'_'),' '=>'_')    
     return cleanname
 end

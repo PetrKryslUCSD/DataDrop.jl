@@ -5,10 +5,10 @@ rm("something_or_other_1=0_5_5_7.h5"; force=true, recursive=true)
   
 module mt0001
 using Test
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 function test()
     name = "something or other.1=0.5_5:7"
-    s =  getcleanname(name)
+    s =  clean_file_name(name)
     @test s == "something_or_other_1=0_5_5_7" 
     a = with_extension(s, ".ext")
     @test a == "something_or_other_1=0_5_5_7.ext"
@@ -22,12 +22,12 @@ mt0001.test()
 
 module mt0002
 using Test
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 using DataValet: store_json, retrieve_json
 function test()
     name = "something or other.1=0.5_5:7"
     ext = ".json"
-    s =  getcleanname(name)
+    s =  clean_file_name(name)
     @test s == "something_or_other_1=0_5_5_7" 
     a = with_extension(s, ext)
     d = Dict("name" => a, "b" => 1, "c" => [3, 1, 3])
@@ -42,12 +42,12 @@ mt0002.test()
 
 module mt0003
 using Test
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 using DataValet: store_matrix, retrieve_matrix
 function test()
     name = "something.or.other.1=0.5_5:7"
     ext = ""
-    s =  getcleanname(name)
+    s =  clean_file_name(name)
     @test s == "something_or_other_1=0_5_5_7"
     a = with_extension(s, ext)
     d = rand(3, 2)
@@ -62,14 +62,14 @@ mt0003.test()
 
 module mt0004
 using Test
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 using DataValet: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
     name = joinpath(p, "matrix d")
     ext = ""
-    s = with_extension(getcleanname(name), ext)
+    s = with_extension(clean_file_name(name), ext)
     d = rand(3, 2)
     store_matrix(s, d)
     d1 = retrieve_matrix(s)
@@ -83,7 +83,7 @@ mt0004.test()
 
 module mt0005
 using Test
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 using DataValet: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
@@ -91,7 +91,7 @@ function test()
     ext = ""
     for t in [Int, Float32, Float64, Complex{Float64}]
         name = joinpath(p, "matrix d " * string(t))
-        s = with_extension(getcleanname(name), ext)
+        s = with_extension(clean_file_name(name), ext)
         d = rand(t, 3, 2)
         store_matrix(s, d)
         @test isfile(s * ".h5") == true
@@ -108,14 +108,14 @@ mt0005.test()
 module mt0006
 using Test
 using SparseArrays
-using DataValet: getcleanname, with_extension
+using DataValet: clean_file_name, with_extension
 using DataValet: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
     name = joinpath(p, "matrix d")
     ext = ""
-    s = with_extension(getcleanname(name), ext)
+    s = with_extension(clean_file_name(name), ext)
     d = sprand(Float64, 5, 3, 0.75)
     store_matrix(s, d)
     d1 = retrieve_matrix(s)
