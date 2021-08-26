@@ -17,6 +17,30 @@ function clean_file_name(name)
 end
 
 """
+    file_extension(filename)
+
+Extract extension from the string representing a file name.
+
+Expected result:
+```
+p = "matrices.dir"
+file_extension(p) == ".dir"
+p = "matrices.h5"
+file_extension(p) == ".h5"
+p = "matri.ces.dir"
+file_extension(p) == ".dir"
+p = "matrices."
+file_extension(p) == "."
+p = "matrices"
+file_extension(p) == ""
+```
+"""
+function file_extension(filename)
+    f, e = splitext(filename)
+    return e
+end
+
+"""
     with_extension(filename, ext)
 
 Make sure the file name has an extension.
@@ -75,25 +99,67 @@ const MATRIX_SPARSE = 1
 """
     retrieve_matrix(fname)
 
-Retrieve a matrix.
+Retrieve a matrix from file `fname`.
 """
 function retrieve_matrix(fname)
-    fname = with_extension(fname, "h5")
+    return retrieve_matrix(fname, "")
+end
+
+
+"""
+    retrieve_matrix(fname, mpath)
+
+Retrieve a matrix from file `fname`.
+
+The matrix data is stored under the path `mpath`.
+
+Example:
+Storing a sparse matrix as "/data" with
+`store_matrix("test\\matrices\\matrix_SInt64.h5f", "/data", d)` gives:
+```
+julia> f = h5open("test\\matrices\\matrix_SInt64.h5f", "r")      
+�
+└─ � data 
+   ├─ � I 
+   ├─ � J 
+   ├─ � V 
+   ├─ � matrix_type
+   ├─ � ncols      
+   └─ � nrows   
+```  
+
+Example:
+Storing a dense matrix under the default path ("/") with
+`store_matrix("matrix_d_Float32.h5", d)` gives:
+```
+julia> f = h5open("matrix_d_Float32.h5", "r")            
+�  
+├─ � matrix      
+└─ � matrix_type    
+```
+"""
+function retrieve_matrix(fname, mpath)
+    if file_extension(fname) == "" 
+        fname = with_extension(fname, "h5")
+    end
+    if mpath != "" && mpath[end:end] != "/"
+        mpath = mpath * "/"
+    end
     typ = MATRIX_UNKNOWN
     f = try
         h5open(fname, "r") 
     catch SystemError
         nothing
     end
-    typ = read(f, "matrix_type")
+    typ = read(f, mpath * "matrix_type")
     if typ == MATRIX_DENSE
-        return read(f, "matrix")
+        return read(f, mpath * "matrix")
     elseif typ == MATRIX_SPARSE
-        I = read(f, "I")
-        J = read(f, "J")
-        V = read(f, "V")
-        nrows = read(f, "nrows")
-        ncols = read(f, "ncols")
+        I = read(f, mpath * "I")
+        J = read(f, mpath * "J")
+        V = read(f, mpath * "V")
+        nrows = read(f, mpath * "nrows")
+        ncols = read(f, mpath * "ncols")
         return sparse(I, J, V, nrows, ncols)
     end
     return nothing
@@ -102,37 +168,61 @@ end
 """
     store_matrix(fname, matrix)
 
-Store a matrix.
+Store a dense matrix into the file `fname`.
 """
 function store_matrix(fname, matrix)
-    fname = with_extension(fname, "h5")
-    h5open(fname, "w") do file
-        write(file, "matrix_type", MATRIX_DENSE) 
-        write(file, "matrix", matrix) 
-    end
+    store_matrix(fname, "", matrix)
 end
 
 
 """
-    store_matrix(fname, matrix)
+    store_matrix(fname, mpath, matrix)
 
-Store a matrix.
+Store a dense matrix under the path `mpath` into the file `fname`.
 """
-function store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{Float64, Int64})
+function store_matrix(fname, mpath, matrix)
+    if file_extension(fname) == ""
+        fname = with_extension(fname, "h5")
+    end
+    if mpath != "" && mpath[end:end] != "/"
+        mpath = mpath * "/"
+    end
+    h5open(fname, "w") do file
+        write(file, mpath * "matrix_type", MATRIX_DENSE) 
+        write(file, mpath * "matrix", matrix) 
+    end
+end
+
+"""
+    store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
+
+Store a sparse matrix under the path `mpath` into the file `fname`.
+"""
+function store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     I, J, V = findnz(matrix)
-    fname = with_extension(fname, "h5")
+    if file_extension(fname) == ""
+        fname = with_extension(fname, "h5")
+    end
+    if mpath != "" && mpath[end:end] != "/"
+        mpath = mpath * "/"
+    end
     h5open(fname, "w") do file
-        write(file, "matrix_type", MATRIX_SPARSE) 
-        write(file, "I", I) 
-        write(file, "J", J) 
-        write(file, "V", V) 
-        write(file, "nrows", size(matrix, 1)) 
-        write(file, "ncols", size(matrix, 2)) 
+        write(file, mpath * "matrix_type", MATRIX_SPARSE) 
+        write(file, mpath * "I", I) 
+        write(file, mpath * "J", J) 
+        write(file, mpath * "V", V) 
+        write(file, mpath * "nrows", size(matrix, 1)) 
+        write(file, mpath * "ncols", size(matrix, 2)) 
     end
 end
 
+"""
+    store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
 
-
-
+Store a sparse matrix into the file `fname`.
+"""
+function store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
+    store_matrix(fname, "", matrix)
+end
 
 end # module

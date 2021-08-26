@@ -128,3 +128,73 @@ mt0006.test()
 
 
 
+module mt0007
+using Test
+using DataValet: clean_file_name, with_extension
+using DataValet: store_matrix, retrieve_matrix
+function test()
+    p = "matrices"
+    mkpath(p)
+    ext = ""
+    for t in [Int, Float32, Float64, Complex{Float64}]
+        name = joinpath(p, "matrix B1 " * string(t))
+        s = with_extension(clean_file_name(name), ext)
+        d = rand(t, 3, 2)
+        store_matrix(s, "/mydata/matrices/B1", d)
+        @test isfile(s * ".h5") == true
+        d1 = retrieve_matrix(s, "/mydata/matrices/B1")
+        @test d == d1
+    end
+    true
+end
+end
+using .mt0007
+mt0007.test()
+
+
+module mt0008
+using Test
+using SparseArrays
+using DataValet: clean_file_name, with_extension
+using DataValet: store_matrix, retrieve_matrix
+function test()
+    p = "matrices"
+    mkpath(p)
+    for t in [Int, Float32, Float64, Complex{Float64}]
+        name = joinpath(p, "matrix S" * string(t))
+        ext = "h5f"
+        s = with_extension(clean_file_name(name), ext)
+        d = sprand(t, 5, 3, 0.75)
+        store_matrix(s, "/data", d)
+        d1 = retrieve_matrix(s, "/data")
+        @test d == d1
+    end
+    true
+end
+end
+using .mt0008
+mt0008.test()
+
+
+
+module mt0009
+using Test
+using SparseArrays
+using DataValet: clean_file_name, with_extension, file_extension
+using DataValet: store_matrix, retrieve_matrix
+function test()
+    p = "matrices.dir"
+    @test file_extension(p) == ".dir"
+    p = "matrices.h5"
+    @test file_extension(p) == ".h5"
+    p = "matri.ces.dir"
+    @test file_extension(p) == ".dir"
+    p = "matrices."
+    @test file_extension(p) == "."
+    p = "matrices"
+    @test file_extension(p) == ""
+    true
+end
+end
+using .mt0009
+mt0009.test()
