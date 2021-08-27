@@ -1,6 +1,6 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Build status](https://github.com/PetrKryslUCSD/DataValet.jl/workflows/CI/badge.svg)](https://github.com/PetrKryslUCSD/DataValet.jl/actions)
-[![codecov](https://codecov.io/gh/PetrKryslUCSD/DataValet.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/PetrKryslUCSD/DataValet.jl)
+[![codecov](https://codecov.io/gh/PetrKryslUCSD/DataValet.jl/branch/master/graph/badge.svg)](https://app.codecov.io/gh/PetrKryslUCSD/DataValet.jl)
 [![Latest documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://petrkryslucsd.github.io/DataValet.jl/dev)
 
 # DataValet.jl
