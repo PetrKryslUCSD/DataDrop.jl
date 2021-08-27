@@ -14,6 +14,12 @@ function test()
     @test a == "something_or_other_1=0_5_5_7.ext"
     a = with_extension(s, "ext")
     @test a == "something_or_other_1=0_5_5_7.ext"
+    a = with_extension(s * ".dat", "ext")
+    @test a == "something_or_other_1=0_5_5_7.ext"
+    a = with_extension(s * ".", "ext")
+    @test a == "something_or_other_1=0_5_5_7.ext"
+    a = with_extension(s * ".x", "ext")
+    @test a == "something_or_other_1=0_5_5_7.ext"
     true
 end
 end
