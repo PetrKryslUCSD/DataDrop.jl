@@ -10,6 +10,14 @@ const _sep = "-"
     clean_file_name(name)
 
 Construct a clean file name.
+
+Replace '.', ':', ' ' (dot, colon, space) with underscores.
+
+Example:
+```
+s =  clean_file_name("something or other.1=0.5_5:7")
+s == "something_or_other_1=0_5_5_7"
+```
 """
 function clean_file_name(name)
     cleanname = replace(replace(replace(name,'.'=>'_'),':'=>'_'),' '=>'_')    
@@ -43,12 +51,14 @@ end
 """
     with_extension(filename, ext)
 
-Make sure the file name has an extension.
+Make sure the file name has the desired extension.
 
-`ext` can be either with or without the leading dot.
+`ext` can be either with or without the leading dot. 
+
 ```
-a = with_extension(s, ".ext") = "something_or_other_1=0_5_5_7.ext"
-a = with_extension(s, "ext") = "something_or_other_1=0_5_5_7.ext"  
+with_extension("fo_1=0_5_5_7", ".ext") == "fo_1=0_5_5_7.ext"
+with_extension("fo_1=0_5_5_7", "ext") == "fo_1=0_5_5_7.ext"  
+with_extension("fo_1=0_5_5_7.dat", "ext") == "fo_1=0_5_5_7.ext"  
 ```
 """
 function with_extension(filename, ext)
@@ -57,21 +67,28 @@ function with_extension(filename, ext)
         f, e = splitext(filename)
         return f 
     else        
+        # If the file has the wrong extension, remove it
+        f, e = splitext(filename)
         # Replace or fix up the extension
         if ext[1] == '.'
             ext = ext[2:end]
         end
-        if match(Regex(".*\\." * ext * "\$"), filename) == nothing
-            filename = filename * "." * ext
+        if match(Regex(".*\\." * ext * "\$"), f) == nothing
+            f = f * "." * ext
         end
+        return f
     end
-    return filename
 end
 
 """
     retrieve_json(j)
 
-Retrieve a dictionary from a JSON file.
+Retrieve a dictionary from a JSON file named `j`.
+
+Example:
+```
+d = retrieve_json("myfile.json")
+```
 """
 function retrieve_json(j)
     j = with_extension(j, "json")
@@ -83,7 +100,7 @@ end
 """
     store_json(j, d)
 
-Store a dictionary into a JSON file.
+Store a dictionary `d` into a JSON file named `j`.
 """
 function store_json(j, d)
     j = with_extension(j, "json")
@@ -168,7 +185,7 @@ end
 """
     store_matrix(fname, matrix)
 
-Store a dense matrix into the file `fname`.
+Store a dense matrix into the file named `fname`.
 """
 function store_matrix(fname, matrix)
     store_matrix(fname, "", matrix)
@@ -196,7 +213,7 @@ end
 """
     store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
 
-Store a sparse matrix under the path `mpath` into the file `fname`.
+Store a sparse matrix under the path `mpath` into the file named `fname`.
 """
 function store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     I, J, V = findnz(matrix)
@@ -219,7 +236,7 @@ end
 """
     store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
 
-Store a sparse matrix into the file `fname`.
+Store a sparse matrix into the file named `fname`.
 """
 function store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     store_matrix(fname, "", matrix)
