@@ -1,8 +1,8 @@
-# FinEtoolsFlexStructures Documentation
+# DataValet Documentation
 
 ## Manual
 
-The description of the types and the functions, organized by module and/or other logical principle.
+The description of the functions, with examples of the use.
 
 ```@contents
 Pages = [
@@ -10,3 +10,5 @@ Pages = [
 ]
 Depth = 2
 ```
+
+Visit the source code on Github: [DataValet.jl](https://github.com/PetrKryslUCSD/DataValet.jl)
