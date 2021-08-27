@@ -101,6 +101,9 @@ end
     store_json(j, d)
 
 Store a dictionary `d` into a JSON file named `j`.
+
+The dictionary is stored into a JSON file. If the file name `fname` is supplied
+without an extension, it is appended the ".json" extension.
 """
 function store_json(j, d)
     j = with_extension(j, "json")
@@ -214,6 +217,9 @@ end
     store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
 
 Store a sparse matrix under the path `mpath` into the file named `fname`.
+
+The matrix is stored into an HDF5 file. If the file name `fname` is supplied
+without an extension, it is appended the ".h5" extension.
 """
 function store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     I, J, V = findnz(matrix)
@@ -237,6 +243,9 @@ end
     store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
 
 Store a sparse matrix into the file named `fname`.
+
+The matrix is stored into an HDF5 file. If the file name `fname` is supplied
+without an extension, it is appended the ".h5" extension.
 """
 function store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     store_matrix(fname, "", matrix)
