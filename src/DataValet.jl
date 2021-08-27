@@ -115,9 +115,9 @@ The matrix data is stored under the path `mpath`.
 
 Example:
 Storing a sparse matrix as "/data" with
-`store_matrix("test\\matrices\\matrix_SInt64.h5f", "/data", d)` gives:
+`store_matrix("test/matrices/matrix_SInt64.h5f", "/data", d)` gives:
 ```
-julia> f = h5open("test\\matrices\\matrix_SInt64.h5f", "r")      
+julia> f = h5open("test/matrices/matrix_SInt64.h5f", "r")      
 �
 └─ � data 
    ├─ � I 

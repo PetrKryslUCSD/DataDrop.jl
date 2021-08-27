@@ -8,7 +8,6 @@ makedocs(
 	sitename = "DataValet.jl",
 	pages = Any[
 			"Home" => "index.md",
-			"How to guide" => "guide/guide.md",
 			"Reference" => "man/reference.md"	
 		],
 	)
