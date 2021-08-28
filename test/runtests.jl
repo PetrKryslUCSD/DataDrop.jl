@@ -1,11 +1,14 @@
-rm("matrices"; force=true, recursive=true)
-rm("something_or_other_1=0_5_5_7.json"; force=true, recursive=true)
-rm("something_or_other_1=0_5_5_7.mytricks.h5"; force=true, recursive=true)
-rm("something_or_other_1=0_5_5_7.h5"; force=true, recursive=true)
-rm("numbers.dir"; force=true, recursive=true)
-rm("numbers.h5"; force=true, recursive=true)
-rm("stuff.h5"; force=true, recursive=true)
+cleanup() = begin
+    rm("matrices"; force=true, recursive=true)
+    rm("something_or_other_1=0_5_5_7.json"; force=true, recursive=true)
+    rm("something_or_other_1=0_5_5_7.mytricks.h5"; force=true, recursive=true)
+    rm("something_or_other_1=0_5_5_7.h5"; force=true, recursive=true)
+    rm("numbers.dir"; force=true, recursive=true)
+    rm("numbers.h5"; force=true, recursive=true)
+    rm("stuff.h5"; force=true, recursive=true)
+end
   
+cleanup()
 module mt0001
 using Test
 using DataValet: clean_file_name, with_extension
@@ -29,6 +32,7 @@ end
 using .mt0001
 mt0001.test()
 
+cleanup()
 module mt0002
 using Test
 using DataValet: clean_file_name, with_extension
@@ -49,6 +53,7 @@ end
 using .mt0002
 mt0002.test()
 
+cleanup()
 module mt0003
 using Test
 using DataValet: clean_file_name, with_extension
@@ -69,6 +74,7 @@ end
 using .mt0003
 mt0003.test()
 
+cleanup()
 module mt0004
 using Test
 using DataValet: clean_file_name, with_extension
@@ -89,7 +95,7 @@ end
 using .mt0004
 mt0004.test()
 
-
+cleanup()
 module mt0005
 using Test
 using DataValet: clean_file_name, with_extension
@@ -113,7 +119,7 @@ end
 using .mt0005
 mt0005.test()
 
-
+cleanup()
 module mt0006
 using Test
 using SparseArrays
@@ -135,8 +141,7 @@ end
 using .mt0006
 mt0006.test()
 
-
-
+cleanup()
 module mt0007
 using Test
 using DataValet: clean_file_name, with_extension
@@ -160,7 +165,7 @@ end
 using .mt0007
 mt0007.test()
 
-
+cleanup()
 module mt0008
 using Test
 using SparseArrays
@@ -184,6 +189,7 @@ end
 using .mt0008
 mt0008.test()
 
+cleanup()
 module mt0009
 using Test
 using SparseArrays
@@ -206,7 +212,7 @@ end
 using .mt0009
 mt0009.test()
 
-
+cleanup()
 module mt0010
 using Test
 using DataValet: clean_file_name, with_extension, file_extension
@@ -233,6 +239,7 @@ end
 using .mt0010
 mt0010.test()
 
+cleanup()
 module mt0011
 using Test
 using DataValet: clean_file_name, with_extension, file_extension
@@ -253,6 +260,7 @@ end
 using .mt0011
 mt0011.test()
 
+cleanup()
 module mt0012
 using Test
 using DataValet: clean_file_name, with_extension, file_extension
@@ -272,3 +280,123 @@ end
 end
 using .mt0012
 mt0012.test()
+
+cleanup()
+module mt0013
+using Test
+using SparseArrays
+using DataValet: clean_file_name, with_extension
+using DataValet: store_matrix, retrieve_matrix
+function test()
+    p = "matrices/afile.h5"
+    mkpath(p)
+
+    d = rand(Int64, 6, 3)
+    store_matrix(joinpath(p, "afile.h5"), "/data/d", d)
+    d1 = retrieve_matrix(joinpath(p, "afile.h5"), "/data/d")
+    @test d == d1
+
+    b = rand(Float64, 6, 3)
+    store_matrix(joinpath(p, "afile.h5"), "/data/b", b)
+    b1 = retrieve_matrix(joinpath(p, "afile.h5"), "/data/b")
+    @test b == b1
+
+    d1 = retrieve_matrix(joinpath(p, "afile.h5"), "/data/d")
+    @test d == d1
+
+    b1 = retrieve_matrix(joinpath(p, "afile.h5"), "/data/b")
+    @test b == b1
+
+    true
+end
+end
+using .mt0013
+mt0013.test()
+
+cleanup()
+module mt0014
+using Test
+using SparseArrays
+using DataValet: clean_file_name, with_extension
+using DataValet: store_matrix, retrieve_matrix, store_value, retrieve_value
+function test()
+    p = "matrices/afile.h5"
+    mkpath(p)
+    f = joinpath(p, "afile.h5")
+
+    d = rand(Int64, 6, 3)
+    store_matrix(f, "/data/d", d)
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b = rand(Float64, 6, 3)
+    store_matrix(f, "/data/b", b)
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    store_value(f, "name", "afile.h5")
+    v = retrieve_value(f, "name")
+    @test v == "afile.h5"
+
+
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    true
+end
+end
+using .mt0014
+mt0014.test()
+
+cleanup()
+module mt0015
+using Test
+using SparseArrays
+using DataValet: clean_file_name, with_extension
+using DataValet: store_matrix, retrieve_matrix, store_value, retrieve_value
+function test()
+    
+    f = joinpath(".", "datafile.h5")
+
+    d = rand(Int64, 6, 3)
+    store_matrix(f, "/data/d", d)
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b = rand(Float64, 6, 3)
+    store_matrix(f, "/data/b", b)
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    store_value(f, "name", "afile.h5")
+    v = retrieve_value(f, "name")
+    @test v == "afile.h5"
+
+
+    d1 = retrieve_matrix(f, "/data/d")
+    @test d == d1
+
+    b1 = retrieve_matrix(f, "/data/b")
+    @test b == b1
+
+    true
+end
+end
+using .mt0015
+mt0015.test()
+cleanup()

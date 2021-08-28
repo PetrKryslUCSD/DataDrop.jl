@@ -204,7 +204,7 @@ function store_matrix(fname, mpath, matrix)
     if mpath != "" && mpath[end:end] != "/"
         mpath = mpath * "/"
     end
-    h5open(fname, "w") do file
+    h5open(fname, "cw") do file
         write(file, mpath * "matrix_type", MATRIX_DENSE) 
         write(file, mpath * "matrix", matrix) 
     end
@@ -226,7 +226,7 @@ function store_matrix(fname, mpath, matrix::SparseArrays.SparseMatrixCSC{T, Int6
     if mpath != "" && mpath[end:end] != "/"
         mpath = mpath * "/"
     end
-    h5open(fname, "w") do file
+    h5open(fname, "cw") do file
         write(file, mpath * "matrix_type", MATRIX_SPARSE) 
         write(file, mpath * "I", I) 
         write(file, mpath * "J", J) 
