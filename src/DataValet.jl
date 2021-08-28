@@ -166,23 +166,20 @@ function retrieve_matrix(fname, mpath)
         mpath = mpath * "/"
     end
     typ = MATRIX_UNKNOWN
-    f = try
-        h5open(fname, "r") 
-    catch SystemError
-        nothing
+    return h5open(fname, "r") do f
+        typ = read(f, mpath * "matrix_type")
+        if typ == MATRIX_DENSE
+            v = read(f, mpath * "matrix")
+        elseif typ == MATRIX_SPARSE
+            I = read(f, mpath * "I")
+            J = read(f, mpath * "J")
+            V = read(f, mpath * "V")
+            nrows = read(f, mpath * "nrows")
+            ncols = read(f, mpath * "ncols")
+            v = sparse(I, J, V, nrows, ncols)
+        end
+        v
     end
-    typ = read(f, mpath * "matrix_type")
-    if typ == MATRIX_DENSE
-        return read(f, mpath * "matrix")
-    elseif typ == MATRIX_SPARSE
-        I = read(f, mpath * "I")
-        J = read(f, mpath * "J")
-        V = read(f, mpath * "V")
-        nrows = read(f, mpath * "nrows")
-        ncols = read(f, mpath * "ncols")
-        return sparse(I, J, V, nrows, ncols)
-    end
-    return nothing
 end
 
 """
@@ -249,6 +246,46 @@ without an extension, it is appended the ".h5" extension.
 """
 function store_matrix(fname, matrix::SparseArrays.SparseMatrixCSC{T, Int64}) where {T}
     store_matrix(fname, "", matrix)
+end
+
+"""
+    store_value(fname, vpath, num) 
+
+Store a number or a string into the file named `fname` under the name `vpath`.
+"""
+function store_value(fname, vpath, num) 
+    if file_extension(fname) == ""
+        fname = with_extension(fname, "h5")
+    end
+    if vpath == ""
+        vpath = "number"
+    end
+    if vpath != "" && vpath[end:end] != "/"
+        vpath = vpath * "/"
+    end
+
+    h5open(fname, "cw") do file
+        write(file, vpath, num) 
+    end
+end
+
+
+"""
+    retrieve_value(fname, vpath)
+
+Retrieve a number or a string known as `vpath` from the file named `fname`.
+"""
+function retrieve_value(fname, vpath)
+    if file_extension(fname) == "" 
+        fname = with_extension(fname, "h5")
+    end
+    if vpath != "" && vpath[end:end] != "/"
+        vpath = vpath * "/"
+    end
+    return h5open(fname, "r") do f
+        v = read(f, vpath)
+        v
+    end
 end
 
 end # module

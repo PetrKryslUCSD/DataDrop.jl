@@ -2,6 +2,9 @@ rm("matrices"; force=true, recursive=true)
 rm("something_or_other_1=0_5_5_7.json"; force=true, recursive=true)
 rm("something_or_other_1=0_5_5_7.mytricks.h5"; force=true, recursive=true)
 rm("something_or_other_1=0_5_5_7.h5"; force=true, recursive=true)
+rm("numbers.dir"; force=true, recursive=true)
+rm("numbers.h5"; force=true, recursive=true)
+rm("stuff.h5"; force=true, recursive=true)
   
 module mt0001
 using Test
@@ -181,8 +184,6 @@ end
 using .mt0008
 mt0008.test()
 
-
-
 module mt0009
 using Test
 using SparseArrays
@@ -204,3 +205,70 @@ end
 end
 using .mt0009
 mt0009.test()
+
+
+module mt0010
+using Test
+using DataValet: clean_file_name, with_extension, file_extension
+using DataValet: store_value, retrieve_value
+function test()
+    p = "numbers.dir"
+    a = 3.13
+    store_value(p, "a", a)
+    ra = retrieve_value(p, "a")
+    @test a == ra
+    Test.@test_throws ErrorException store_value(p, "/a", a)
+    ra = retrieve_value(p, "/a")
+    @test a == ra
+    store_value(p, "/mynumber/a", a)
+    ra = retrieve_value(p, "/mynumber/a")
+    @test a == ra
+    b = 61
+    store_value(p, "/mynumber/b", b)
+    rb = retrieve_value(p, "/mynumber/b")
+    @test b == rb
+    true
+end
+end
+using .mt0010
+mt0010.test()
+
+module mt0011
+using Test
+using DataValet: clean_file_name, with_extension, file_extension
+using DataValet: store_value, retrieve_value
+function test()
+    p = "numbers.h5"
+    a = 3.13
+    store_value(p, "/mynumber/a", a)
+    ra = retrieve_value(p, "/mynumber/a")
+    @test a == ra
+    b = 61
+    store_value(p, "/mynumber/b", b)
+    rb = retrieve_value(p, "/mynumber/b")
+    @test b == rb
+    true
+end
+end
+using .mt0011
+mt0011.test()
+
+module mt0012
+using Test
+using DataValet: clean_file_name, with_extension, file_extension
+using DataValet: store_value, retrieve_value
+function test()
+    p = "stuff.h5"
+    a = 3.13
+    store_value(p, "/mynumber/a", a)
+    ra = retrieve_value(p, "/mynumber/a")
+    @test a == ra
+    b = "61"
+    store_value(p, "/mystring/b", b)
+    rb = retrieve_value(p, "/mystring/b")
+    @test b == rb
+    true
+end
+end
+using .mt0012
+mt0012.test()
