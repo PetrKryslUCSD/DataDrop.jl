@@ -6,6 +6,7 @@ cleanup() = begin
     rm("numbers.dir"; force=true, recursive=true)
     rm("numbers.h5"; force=true, recursive=true)
     rm("stuff.h5"; force=true, recursive=true)
+    rm("datafile.h5"; force=true, recursive=true)
 end
   
 cleanup()
