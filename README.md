@@ -5,9 +5,9 @@
 
 # DataDrop.jl
 
-Simple package for storing date to the disk:
+Simple package for storing data to the disk:
 
-- Store and retrieve matrices, both dense and sparse, and number and string scalar values using the HDF5 machine-independent binary format.
+- Store and retrieve matrices, both dense and sparse, and number and string scalar values, using the HDF5 machine-independent binary format.
 
 - Store and retrieve dictionaries of values using the JSON format.
 
