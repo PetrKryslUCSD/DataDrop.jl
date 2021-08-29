@@ -1,4 +1,4 @@
-# DataValet Documentation
+# DataDrop Documentation
 
 ## Manual
 
@@ -11,4 +11,4 @@ Pages = [
 Depth = 2
 ```
 
-Visit the source code on Github: [DataValet.jl](https://github.com/PetrKryslUCSD/DataValet.jl)
+Visit the source code on Github: [DataDrop.jl](https://github.com/PetrKryslUCSD/DataDrop.jl)

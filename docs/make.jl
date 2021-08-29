@@ -1,11 +1,11 @@
-using Documenter, DataValet
+using Documenter, DataDrop
 
 makedocs(
-	modules = [DataValet],
+	modules = [DataDrop],
 	doctest = false, clean = true,
 	format = Documenter.HTML(prettyurls = false),
 	authors = "Petr Krysl",
-	sitename = "DataValet.jl",
+	sitename = "DataDrop.jl",
 	pages = Any[
 			"Home" => "index.md",
 			"Reference" => "man/reference.md"	
@@ -13,6 +13,6 @@ makedocs(
 	)
 
 deploydocs(
-    repo = "github.com/PetrKryslUCSD/DataValet.jl.git",
+    repo = "github.com/PetrKryslUCSD/DataDrop.jl.git",
     devbranch = "main"
 )

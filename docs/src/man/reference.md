@@ -1,7 +1,7 @@
 # Types
 
 ```@autodocs
-Modules = [DataValet]
+Modules = [DataDrop]
 Private = true
 Order = [:type]
 ```
@@ -10,7 +10,7 @@ Order = [:type]
 
 
 ```@autodocs
-Modules = [DataValet]
+Modules = [DataDrop]
 Private = true
 Order = [:function]
 ```

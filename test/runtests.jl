@@ -12,7 +12,7 @@ end
 cleanup()
 module mt0001
 using Test
-using DataValet: clean_file_name, with_extension
+using DataDrop: clean_file_name, with_extension
 function test()
     name = "something or other.1=0.5_5:7"
     s =  clean_file_name(name)
@@ -36,8 +36,8 @@ mt0001.test()
 cleanup()
 module mt0002
 using Test
-using DataValet: clean_file_name, with_extension
-using DataValet: store_json, retrieve_json
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_json, retrieve_json
 function test()
     name = "something or other.1=0.5_5:7"
     ext = ".json"
@@ -57,8 +57,8 @@ mt0002.test()
 cleanup()
 module mt0003
 using Test
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     name = "something.or.other.1=0.5_5:7"
     ext = ""
@@ -78,8 +78,8 @@ mt0003.test()
 cleanup()
 module mt0004
 using Test
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
@@ -99,8 +99,8 @@ mt0004.test()
 cleanup()
 module mt0005
 using Test
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
@@ -124,8 +124,8 @@ cleanup()
 module mt0006
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
@@ -145,8 +145,8 @@ mt0006.test()
 cleanup()
 module mt0007
 using Test
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
@@ -170,8 +170,8 @@ cleanup()
 module mt0008
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices"
     mkpath(p)
@@ -194,8 +194,8 @@ cleanup()
 module mt0009
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension, file_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension, file_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices.dir"
     @test file_extension(p) == ".dir"
@@ -216,8 +216,8 @@ mt0009.test()
 cleanup()
 module mt0010
 using Test
-using DataValet: clean_file_name, with_extension, file_extension
-using DataValet: store_value, retrieve_value
+using DataDrop: clean_file_name, with_extension, file_extension
+using DataDrop: store_value, retrieve_value
 function test()
     p = "numbers.dir"
     a = 3.13
@@ -243,8 +243,8 @@ mt0010.test()
 cleanup()
 module mt0011
 using Test
-using DataValet: clean_file_name, with_extension, file_extension
-using DataValet: store_value, retrieve_value
+using DataDrop: clean_file_name, with_extension, file_extension
+using DataDrop: store_value, retrieve_value
 function test()
     p = "numbers.h5"
     a = 3.13
@@ -264,8 +264,8 @@ mt0011.test()
 cleanup()
 module mt0012
 using Test
-using DataValet: clean_file_name, with_extension, file_extension
-using DataValet: store_value, retrieve_value
+using DataDrop: clean_file_name, with_extension, file_extension
+using DataDrop: store_value, retrieve_value
 function test()
     p = "stuff.h5"
     a = 3.13
@@ -286,8 +286,8 @@ cleanup()
 module mt0013
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix
 function test()
     p = "matrices/afile.h5"
     mkpath(p)
@@ -318,8 +318,8 @@ cleanup()
 module mt0014
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix, store_value, retrieve_value
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix, store_value, retrieve_value
 function test()
     p = "matrices/afile.h5"
     mkpath(p)
@@ -362,8 +362,8 @@ cleanup()
 module mt0015
 using Test
 using SparseArrays
-using DataValet: clean_file_name, with_extension
-using DataValet: store_matrix, retrieve_matrix, store_value, retrieve_value
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix, store_value, retrieve_value
 function test()
     
     f = joinpath(".", "datafile.h5")

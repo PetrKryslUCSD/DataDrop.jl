@@ -63,8 +63,8 @@ jobs:
           julia --project=docs -e '
             import Pkg; Pkg.add("Documenter")
             using Documenter: doctest
-            using DataValet
-            doctest(DataValet)' 
+            using DataDrop
+            doctest(DataDrop)' 
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
