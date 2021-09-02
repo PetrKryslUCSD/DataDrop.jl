@@ -125,6 +125,16 @@ function retrieve_matrix(fname)
     return retrieve_matrix(fname, "")
 end
 
+"""
+    empty_hdf5_file(fname)
+
+Empty an HDF5 file. All contents will be erased.
+"""
+function empty_hdf5_file(fname)
+    # If the file exists, delete all contents
+    h5open(fname, "w") do fid
+    end
+end
 
 """
     retrieve_matrix(fname, mpath)
