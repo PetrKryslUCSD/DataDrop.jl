@@ -132,6 +132,9 @@ Empty an HDF5 file. All contents will be erased.
 """
 function empty_hdf5_file(fname)
     # If the file exists, delete all contents
+    if file_extension(fname) == ""
+        fname = with_extension(fname, "h5")
+    end
     h5open(fname, "w") do fid
     end
 end
