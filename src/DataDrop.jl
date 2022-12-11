@@ -3,6 +3,7 @@ module DataDrop
 using JSON
 using SparseArrays
 using HDF5
+using LinearAlgebra
 
 const _sep = "-"
 
@@ -204,6 +205,17 @@ function store_matrix(fname, matrix)
     store_matrix(fname, "", matrix)
 end
 
+# In order to handle transpose and adjoint, we need additional methods
+# These methods materialize the transposes/adjoints using Matrix
+store_matrix(fname, matrix::LinearAlgebra.Adjoint{T, Matrix{T}}) where {T} = 
+    store_matrix(fname, "", Matrix(matrix))
+
+store_matrix(fname, mpath, matrix::LinearAlgebra.Adjoint{T, Matrix{T}}) where {T} = store_matrix(fname, mpath, Matrix(matrix))
+
+store_matrix(fname, matrix::LinearAlgebra.Transpose{T, Matrix{T}}) where {T} = 
+    store_matrix(fname, "", Matrix(matrix))
+
+store_matrix(fname, mpath, matrix::LinearAlgebra.Transpose{T, Matrix{T}}) where {T} = store_matrix(fname, mpath, Matrix(matrix))
 
 """
     store_matrix(fname, mpath, matrix)

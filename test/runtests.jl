@@ -427,3 +427,67 @@ end
 end
 using .mt0016
 mt0016.test()
+
+
+cleanup()
+cleanup()
+module mt0017
+using Test
+using SparseArrays
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix, store_value, retrieve_value, empty_hdf5_file
+function test()
+    
+    f = joinpath(".", "datafile.h5")
+
+    d = rand(Int64, 6, 3)
+    store_matrix(f, "/data/d", transpose(d))
+    d1 = retrieve_matrix(f, "/data/d")
+    @test transpose(d) == d1
+
+    empty_hdf5_file(f)
+
+    
+    @test_throws KeyError d1 = retrieve_matrix(f, "/data/d")
+
+    true
+end
+end
+using .mt0017
+mt0017.test()
+
+
+cleanup()
+cleanup()
+module mt0018
+using Test
+using SparseArrays
+using DataDrop: clean_file_name, with_extension
+using DataDrop: store_matrix, retrieve_matrix, store_value, retrieve_value, empty_hdf5_file
+function test()
+    
+    f = joinpath(".", "datafile.h5")
+
+    d = rand(ComplexF64, 6, 3)
+    store_matrix(f, "/data/d", adjoint(d))
+    d1 = retrieve_matrix(f, "/data/d")
+    @test adjoint(d) == d1
+
+    empty_hdf5_file(f)
+
+    d = rand(ComplexF64, 6, 3)
+    store_matrix(f, "/data/d", transpose(d))
+    d1 = retrieve_matrix(f, "/data/d")
+    @test transpose(d) == d1
+
+    empty_hdf5_file(f)
+
+    
+    @test_throws KeyError d1 = retrieve_matrix(f, "/data/d")
+
+    true
+end
+end
+using .mt0018
+mt0018.test()
+
