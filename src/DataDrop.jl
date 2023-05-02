@@ -45,7 +45,7 @@ file_extension(p) == ""
 ```
 """
 function file_extension(filename)
-    f, e = splitext(filename)
+    _, e = splitext(filename)
     return e
 end
 
@@ -74,7 +74,7 @@ function with_extension(filename, ext)
         if ext[1] == '.'
             ext = ext[2:end]
         end
-        if match(Regex(".*\\." * ext * "\$"), f) == nothing
+        if match(Regex(".*\\." * ext * "\$"), f) === nothing
             f = f * "." * ext
         end
         return f
@@ -136,7 +136,7 @@ function empty_hdf5_file(fname)
     if file_extension(fname) == ""
         fname = with_extension(fname, "h5")
     end
-    h5open(fname, "w") do fid
+    h5open(fname, "w") do _
     end
 end
 
