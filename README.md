@@ -11,7 +11,7 @@ Simple package for storing data to the disk:
 
 - Store and retrieve dictionaries of values using the JSON format.
 
-To store and retrieve data is as simple as
+To store and retrieve matrix data is as simple as
 ```
 julia> using DataDrop
    
@@ -34,4 +34,44 @@ julia> yac = DataDrop.retrieve_matrix("c.h5")
  0.262007  0.778962   0.0651033  
 ```
 
+To store a numerical value or a string, use
+```
+julia> DataDrop.store_value("numbers.h5", "/mynumber/a", a)  
 
+julia> DataDrop.retrieve_value("numbers.h5", "/mynumber/a")              
+42
+``` 
+
+To store a dictionary of values, we can do
+```
+julia> s = "variable-a=0.5:b=5:c=7"  
+"variable-a=0.5:b=5:c=7"
+                           
+julia> s =  DataDrop.clean_file_name(s)  
+"variable-a=0_5_b=5_c=7"
+         
+julia> s = "variable-a=0.5:b=5:c=7"
+"variable-a=0.5:b=5:c=7"                                             
+                        
+julia> s =  DataDrop.clean_file_name(s) 
+"variable-a=0_5_b=5_c=7"
+                
+julia> a = DataDrop.with_extension(s, "json")                                                                                   
+"variable-a=0_5_b=5_c=7.json"
+
+julia> d = Dict("name" => a, "b" => 1, "c" => [3, 1, 3])        
+Dict{String, Any} with 3 entries: 
+  "name" => "variable-a=0_5_b=5_c=7.json" 
+  "c"    => [3, 1, 3]
+  "b"    => 1
+
+julia> DataDrop.store_json(a, d)
+
+julia> d1 = DataDrop.retrieve_json(a)
+Dict{String, Any} with 3 entries:
+  "name" => "variable-a=0_5_b=5_c=7.json"
+  "c"    => Any[3, 1, 3]
+  "b"    => 1         
+
+julia> 
+```
