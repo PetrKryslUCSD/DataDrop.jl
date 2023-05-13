@@ -44,12 +44,6 @@ julia> DataDrop.retrieve_value("numbers.h5", "/mynumber/a")
 
 To store a dictionary of values, we can do
 ```
-julia> s = "variable-a=0.5:b=5:c=7"  
-"variable-a=0.5:b=5:c=7"
-                           
-julia> s =  DataDrop.clean_file_name(s)  
-"variable-a=0_5_b=5_c=7"
-         
 julia> s = "variable-a=0.5:b=5:c=7"
 "variable-a=0.5:b=5:c=7"                                             
                         
