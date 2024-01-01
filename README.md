@@ -50,7 +50,7 @@ julia> s = "variable-a=0.5:b=5:c=7"
 julia> s =  DataDrop.clean_file_name(s) 
 "variable-a=0_5_b=5_c=7"
                 
-julia> a = DataDrop.with_extension(s, "json")                                                                                   
+julia> a = DataDrop.with_extension(s, "json")
 "variable-a=0_5_b=5_c=7.json"
 
 julia> d = Dict("name" => a, "b" => 1, "c" => [3, 1, 3])        
